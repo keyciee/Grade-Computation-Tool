@@ -1,32 +1,32 @@
-from flask import Flask, request
-app = Flask(__name__)
+from flask import Flask, request #integrate Flask application
+app = Flask(__name__) #creates the Flask web application
 
-@app.route('/', methods=['GET', 'POST'])
-def calculationsnya(): 
-    result_message = '' 
-    if request.method =='POST':
-        preliminary = request.form.get('preliminary')
+@app.route('/', methods=['GET', 'POST']) #handle the GET, POST method
+def calculationsnya(): #this function handles the grade calculations
+    result_message = '' #it will display/handle appropriate messages
+    if request.method =='POST': #it checks the user input if submitted
+        preliminary = request.form.get('preliminary') #retrieve the user input and define as 'preliminary'
         
         try:
-            preliminary = float(preliminary) if preliminary else None 
+            preliminary = float(preliminary) if preliminary else None #if no user input, None is assigned
             
-            totalgradenya = 75
+            totalgradenya = 75 #target grade to achieve 75% grade
 
-            if preliminary is not None and (preliminary < 0 or preliminary > 20): 
+            if preliminary is not None and (preliminary < 0 or preliminary > 20): #this block will only accept 0-20 value and provide a message if out of range
                 result_message = "Invalid input. Preliminary grade must be between 0 and 20."
-            elif preliminary is not None:
+            elif preliminary is not None: #if user input is valid according to 'if' block, the calculation will process
                 midterm_requirementnya = (totalgradenya - preliminary * 0.20) * (0.30 / (0.30 + 0.50))
                 final_requirementnya = (totalgradenya - preliminary) - midterm_requirementnya
                 result_message = (
-                    f"In order to pass with a Prelim grade of {preliminary:.2f}, you need:<br>" \
+                    f"In order to pass with a Prelim grade of {preliminary:.2f}, you need:<br>" \ #provided message based on user input
                     f"- Midterm Grade: {midterm_requirementnya:.2f} or higher<br>" \
                     f"- Final Grade: {final_requirementnya:.2f} or higher."
                 )
             
-        except ValueError:
+        except ValueError: #handle invalid inputs such as non-numeric data, and provide the error message
             result_message = "Invalid Input! Please enter valid numeric value for Preliminary grade."
-
-    return f"""
+#returns the html to display into the browser
+    return f""" 
     <!DOCTYPE html>
     <html lang="en">
     <head>
